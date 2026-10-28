@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Real Book שלי</title>
+<meta name="theme-color" content="#16171b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;-webkit-tap-highlight-color:transparent}img{max-width:100%}[hidden]{display:none!important}</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Secular+One&family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* Layout: one-column phone library (index grouped by letter, like the book's own index) + full-screen chart reader */
+:root{
+  --paper:#f7f6f1; --ink:#16171b; --muted:#6b6e78; --rule:#dcdad2;
+  --pen:#1f4fbf; --pen-soft:#e4ebfa; --star:#c98a00; --card:#ffffff;
+  --f-mark:"Permanent Marker","Marker Felt","Comic Sans MS",cursive;
+  --f-head:"Secular One","Assistant",system-ui,sans-serif;
+  --f-body:"Assistant",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#15161a; --ink:#ecebe6; --muted:#9a9ca6; --rule:#2c2e35;
+  --pen:#8fb0ff; --pen-soft:#1f2740; --star:#f0b93a; --card:#1c1d22; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#15161a; --ink:#ecebe6; --muted:#9a9ca6; --rule:#2c2e35;
+  --pen:#8fb0ff; --pen-soft:#1f2740; --star:#f0b93a; --card:#1c1d22; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:640px;margin:0 auto;padding-block:8px 48px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);z-index:5;padding-block:12px 10px;border-bottom:2px solid var(--ink)}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.mark{font-family:var(--f-mark);font-size:2rem;line-height:1;letter-spacing:.5px;direction:ltr}
+.mark small{font-size:.9rem;color:var(--pen);margin-inline-start:6px}
+.vol{font-family:var(--f-head);color:var(--muted);font-size:.85rem}
+.search{margin-top:12px;display:flex;gap:8px}
+input,button,select,textarea{font:inherit;color:inherit}
+.search input{flex:1;min-width:0;padding:10px 12px;border:1.5px solid var(--rule);border-radius:8px;background:var(--card)}
+input:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--pen);outline-offset:2px}
+.tabs{display:flex;gap:6px;margin-top:10px}
+.tab{border:0;background:transparent;padding:6px 12px;border-radius:999px;color:var(--muted);font-weight:600;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.btn{border:1.5px solid var(--ink);background:var(--card);padding:9px 14px;border-radius:8px;font-weight:700;cursor:pointer}
+.btn.primary{background:var(--pen);border-color:var(--pen);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#0d1220}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#0d1220}}
+.btn.ghost{border-color:var(--rule)}
+.pdfbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:10px 12px;border:1.5px dashed var(--rule);border-radius:10px;font-size:.92rem;flex-wrap:wrap}
+.pick{position:relative;overflow:hidden;display:inline-block}
+.pick input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:0}
+.paste{display:block;width:100%;box-sizing:border-box;margin-top:10px;padding:12px;border:1.5px dashed var(--pen);border-radius:10px;background:var(--pen-soft);color:var(--ink);resize:none;text-align:center;font-size:.9rem}
+.paste::placeholder{color:var(--muted)}
+.pdfbar .name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:right;flex:1}
+.empty{margin-top:28px;text-align:center;display:grid;gap:12px;justify-items:center}
+.empty h2{font-family:var(--f-head);font-weight:400;font-size:1.35rem;margin:0;text-wrap:balance}
+.empty p{margin:0;color:var(--muted);max-width:34ch}
+.staff{width:100%;max-width:280px;height:auto}
+.letter{font-family:var(--f-mark);font-size:1.3rem;color:var(--pen);margin:18px 0 4px;direction:ltr;text-align:right}
+ul.songs{list-style:none;margin:0;padding:0}
+.songs li{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--rule)}
+.songs .open{flex:1;min-width:0;display:flex;justify-content:space-between;gap:10px;background:none;border:0;padding:12px 2px;text-align:right;cursor:pointer}
+.songs .t{font-weight:600;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.songs .p{color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+.star{border:0;background:none;font-size:1.25rem;line-height:1;cursor:pointer;color:var(--rule);padding:8px}
+.star.on{color:var(--star)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+details.import{margin-top:12px;border:1.5px solid var(--rule);border-radius:10px;padding:10px 12px;background:var(--card)}
+details.import summary{cursor:pointer;font-weight:700}
+details.import textarea{width:100%;min-height:150px;margin-top:8px;border:1px solid var(--rule);border-radius:6px;padding:8px;background:var(--paper);direction:ltr;font-family:ui-monospace,monospace;font-size:.85rem;box-sizing:border-box}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.row label{font-size:.9rem;color:var(--muted)}
+.row input[type=number]{width:5.5em;padding:6px 8px;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
+.hint{font-size:.85rem;color:var(--muted);margin:6px 0 0}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:999px;font-weight:600;z-index:50}
+
+/* Reader */
+.reader{position:fixed;inset:0;z-index:20;background:#fff;display:flex;flex-direction:column}
+.reader.night{background:#111}
+.reader.night canvas{filter:invert(1) hue-rotate(180deg)}
+.stage{flex:1;overflow:auto;position:relative;touch-action:pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
+.stage canvas{display:block;margin:0 auto;max-width:none}
+.bar{position:absolute;left:0;right:0;display:flex;align-items:center;gap:8px;background:rgba(22,23,27,.92);color:#f2f1ec;z-index:2;
+  padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));transition:transform .2s}
+.bar.topb{top:0;padding-top:calc(8px + env(safe-area-inset-top,0px));padding-bottom:8px}
+.bar.botb{bottom:0;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));padding-top:8px}
+.reader.chromeless .topb{transform:translateY(-110%)}
+.reader.chromeless .botb{transform:translateY(110%)}
+.bar button{background:none;border:0;color:inherit;font-size:1.05rem;padding:8px 10px;cursor:pointer;border-radius:6px}
+.bar button.on{color:#f0b93a}
+.bar .title{flex:1;min-width:0;font-family:var(--f-head);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;direction:ltr}
+.bar input[type=range]{flex:1;min-width:0;accent-color:#8fb0ff}
+.bar .pg{font-variant-numeric:tabular-nums;min-width:4.5em;text-align:center;font-size:.9rem}
+.tapzone{position:absolute;top:0;bottom:0;width:28%;z-index:1}
+.tapzone.l{left:0}.tapzone.r{right:0}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:#888;font-family:var(--f-head)}
+@media (prefers-reduced-motion:reduce){.bar{transition:none}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap" id="app">
+  <header class="top">
+    <div class="brand">
+      <div class="mark">The Real Book<small>Vol.</small></div>
+      <div class="vol" id="count">0 שירים</div>
+    </div>
+    <div class="search"><input id="q" type="search" placeholder="חיפוש שיר… (Autumn, Blue…)" autocomplete="off" aria-label="חיפוש שיר"></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="all" aria-selected="true">כל השירים</button>
+      <button class="tab" role="tab" data-tab="fav" aria-selected="false">מועדפים</button>
+      <button class="tab" role="tab" data-tab="recent" aria-selected="false">אחרונים</button>
+    </div>
+  </header>
+
+  <div class="pdfbar" id="pdfbar">
+    <span class="name" id="pdfname">לא נטען קובץ</span>
+    <label class="btn primary pick" id="loadImg">📷 הוסף תמונות<input type="file" id="fileImg" accept="image/*" multiple></label>
+    <label class="btn ghost pick" id="loadBtn">טען PDF<input type="file" id="file" accept="application/pdf,.pdf"></label>
+    <button class="btn ghost" id="openBook" hidden>פתח ספר</button>
+  </div>
+
+  <main id="list"></main>
+
+  <details class="import" id="importBox">
+    <summary>אינדקס שירים והגדרות</summary>
+    <p class="hint">הדבק שורה לכל שיר: שם השיר ואחריו מספר העמוד בספר. אפשר להדביק אינדקס שלם בבת אחת.</p>
+    <textarea id="idx" spellcheck="false" placeholder="All The Things You Are, 19&#10;Autumn Leaves 24&#10;Blue Bossa; 46"></textarea>
+    <div class="row">
+      <button class="btn primary" id="saveIdx">שמור אינדקס</button>
+      <button class="btn ghost" id="clearIdx">נקה הכל</button>
+    </div>
+    <div class="row">
+      <label for="offset">היסט עמודים (עמוד PDF פחות עמוד בספר):</label>
+      <input type="number" id="offset" value="0" step="1">
+    </div>
+    <p class="hint">אם שיר שרשום בעמוד 19 נפתח בעמוד הלא נכון, שנה את ההיסט. לדוגמה: אם עמוד 19 בספר הוא עמוד 23 בקובץ, ההיסט הוא 4.</p>
+  </details>
+</div>
+
+<div class="reader" id="reader" hidden>
+  <div class="bar topb">
+    <button id="rBack" aria-label="חזרה לרשימה">→</button>
+    <div class="title" id="rTitle"></div>
+    <button id="rAdd" aria-label="הוסף שיר בעמוד זה">＋</button>
+    <button id="rNight" aria-label="מצב לילה">☾</button>
+    <button id="rFit" aria-label="התאמה לגובה או לרוחב">⇕</button>
+  </div>
+  <div class="stage" id="stage">
+    <div class="loading" id="rLoading">טוען…</div>
+    <canvas id="cv"></canvas>
+  </div>
+  <div class="tapzone l" id="tzL"></div><div class="tapzone r" id="tzR"></div>
+  <div class="bar botb">
+    <button id="rPrev" aria-label="עמוד קודם">›</button>
+    <input type="range" id="rRange" min="1" max="1" value="1" aria-label="מעבר לעמוד">
+    <span class="pg" id="rPg">1</span>
+    <button id="rNext" aria-label="עמוד הבא">‹</button>
+  </div>
+  <div id="addRow" class="bar botb" hidden style="bottom:auto;top:calc(56px + env(safe-area-inset-top,0px))">
+    <input id="addName" placeholder="שם השיר בעמוד הזה" style="flex:1;min-width:0;padding:8px;border-radius:6px;border:0;color:#16171b;direction:ltr">
+    <button id="addSave">שמור</button>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const LS={get(k,d){try{const v=localStorage.getItem('rb_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+          set(k,v){try{localStorage.setItem('rb_'+k,JSON.stringify(v))}catch(e){}}};
+let songs=LS.get('songs',[]), favs=new Set(LS.get('favs',[])), recent=LS.get('recent',[]);
+let offset=LS.get('offset',0), tab='all', night=LS.get('night',false), fitH=LS.get('fitH',false);
+let pdf=null, pageNum=LS.get('last',1), curTitle='', renderTask=null, wake=null;
+
+function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,1800)}
+const key=s=>s.title+'|'+s.page;
+
+/* ---------- IndexedDB for the PDF ---------- */
+function db(){return new Promise((res,rej)=>{try{const r=indexedDB.open('realbook',1);
+  r.onupgradeneeded=()=>r.result.createObjectStore('f');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
+async function savePdf(buf,name){try{const d=await db();const tx=d.transaction('f','readwrite');tx.objectStore('f').put({buf,name},'book');}catch(e){}}
+async function loadSaved(){try{const d=await db();return await new Promise(r=>{const q=d.transaction('f').objectStore('f').get('book');q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)})}catch(e){return null}}
+
+async function openPdf(buf,name){
+  try{
+    if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'}
+    pdf=await pdfjsLib.getDocument({data:new Uint8Array(buf.slice(0)),isEvalSupported:false}).promise;
+    $('pdfname').textContent=name+' · '+pdf.numPages+' עמ׳';
+    $('openBook').hidden=false;
+    $('rRange').max=pdf.numPages;
+    render();
+  }catch(e){toast('לא הצלחתי לפתוח את הקובץ. ודא שזה PDF תקין.')}
+}
+/* Photos of pages: kept as an ordered list of image blobs, shown like PDF pages */
+function imgBook(blobs,name){
+  const imgs=blobs;return {numPages:imgs.length,isImg:true,name,imgs,
+    getPage:n=>new Promise((res,rej)=>{const url=URL.createObjectURL(imgs[n-1]);const im=new Image();
+      im.onload=()=>res({getViewport:({scale})=>({width:im.naturalWidth*scale,height:im.naturalHeight*scale}),
+        render:({canvasContext:c,viewport:v})=>({promise:Promise.resolve(c.drawImage(im,0,0,v.width,v.height)).then(()=>URL.revokeObjectURL(url)),cancel(){}})});
+      im.onerror=rej;im.src=url})};
+}
+function showBook(name){$('pdfname').textContent=name+' · '+pdf.numPages+' עמ׳';
+  $('openBook').hidden=false;$('rRange').max=pdf.numPages;render()}
+async function addImages(imgs){
+  const prev=(pdf&&pdf.isImg)?pdf.imgs:[];const all=prev.concat(imgs);
+  pdf=imgBook(all,'תמונות');showBook('תמונות');
+  try{const d=await db();d.transaction('f','readwrite').objectStore('f').put({imgs:all,name:'תמונות'},'book')}catch(_){}
+  toast('נוספו '+imgs.length+' עמודים');
+}
+/* Paste fallback: in-app viewers that won't open the gallery still accept a pasted image */
+function onPaste(e){const items=[...((e.clipboardData||{}).items||[])];
+  const imgs=items.filter(i=>i.kind==='file'&&i.type.startsWith('image/')).map(i=>i.getAsFile()).filter(Boolean);
+  if(!imgs.length)return;e.preventDefault();addImages(imgs)}
+document.addEventListener('paste',e=>{if(document.activeElement&&document.activeElement.id==='idx')return;onPaste(e)});
+$('fileImg').onchange=$('file').onchange=async e=>{const files=[...e.target.files];e.target.value='';if(!files.length)return;
+  const imgs=files.filter(f=>f.type.startsWith('image/')||/\.(jpe?g|png|heic|webp)$/i.test(f.name));
+  if(imgs.length){imgs.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));addImages(imgs);return}
+  const f=files[0];const buf=await f.arrayBuffer();
+  await openPdf(buf,f.name);savePdf(buf,f.name);toast('הספר נשמר בטלפון')};
+
+/* ---------- Library ---------- */
+function parseIndex(text){
+  const out=[];text.split(/\r?\n/).forEach(l=>{l=l.trim();if(!l)return;
+    let m=l.match(/^(.*?)[\s,;|\t.\-–]+(\d{1,4})\s*$/);
+    if(m&&m[1].trim()){out.push({title:m[1].trim(),page:+m[2]});return}
+    m=l.match(/^(\d{1,4})[\s,;|\t.\-–]+(.+)$/);
+    if(m)out.push({title:m[2].trim(),page:+m[1]});});
+  return out;
+}
+function sortSongs(){songs.sort((a,b)=>a.title.localeCompare(b.title,'en',{sensitivity:'base'}))}
+function render(){
+  const q=$('q').value.trim().toLowerCase();
+  let list=songs;
+  if(tab==='fav')list=songs.filter(s=>favs.has(key(s)));
+  if(tab==='recent')list=recent.map(k=>songs.find(s=>key(s)===k)).filter(Boolean);
+  if(q)list=list.filter(s=>s.title.toLowerCase().includes(q)||String(s.page)===q);
+  $('count').textContent=songs.length+' שירים';
+  const L=$('list');L.innerHTML='';
+  if(!songs.length){
+    L.innerHTML=`<div class="empty">
+      <svg class="staff" viewBox="0 0 280 70" aria-hidden="true">${[0,1,2,3,4].map(i=>`<line x1="0" x2="280" y1="${14+i*10}" y2="${14+i*10}" stroke="currentColor" stroke-width="1" opacity=".35"/>`).join('')}
+      <text x="140" y="46" text-anchor="middle" font-family="Permanent Marker, cursive" font-size="22" fill="currentColor">Cmaj7  A7  Dm7  G7</text></svg>
+      <h2>הספרייה עוד ריקה</h2>
+      <p>${pdf?'הספר נטען. עכשיו הוסף אינדקס שירים כדי לחפש ולקפוץ ישר לשיר.':'טען את קובץ ה-PDF של ה-Real Book שלך, או תמונות של הדפים מהגלריה. אחר כך הוסף שמות שירים.'}</p>
+      ${pdf?'<button class="btn primary" id="goIdx">הוסף אינדקס</button>':''}</div>`;
+    const g=$('goIdx');if(g)g.onclick=()=>{$('importBox').open=true;$('idx').focus()};
+    return;
+  }
+  if(!list.length){L.innerHTML=`<div class="empty"><p>${tab==='fav'?'אין עדיין מועדפים. סמן כוכב ליד שיר.':tab==='recent'?'עוד לא פתחת שירים.':'לא נמצא שיר בשם הזה.'}</p></div>`;return}
+  let cur='',ul=null;
+  list.forEach(s=>{
+    const ch=tab==='recent'?'':(s.title[0]||'#').toUpperCase().replace(/[^A-Z]/,'#');
+    if(!ul||ch!==cur){cur=ch;if(ch){const h=document.createElement('div');h.className='letter';h.textContent=ch;L.appendChild(h)}
+      ul=document.createElement('ul');ul.className='songs';L.appendChild(ul)}
+    const li=document.createElement('li');const k=key(s);
+    li.innerHTML=`<button class="open"><span class="t"></span><span class="p">עמ׳ ${s.page}</span></button><button class="star${favs.has(k)?' on':''}" aria-label="מועדף">★</button>`;
+    li.querySelector('.t').textContent=s.title;
+    li.querySelector('.open').onclick=()=>openSong(s);
+    li.querySelector('.star').onclick=e=>{favs.has(k)?favs.delete(k):favs.add(k);LS.set('favs',[...favs]);e.currentTarget.classList.toggle('on')};
+    ul.appendChild(li);
+  });
+}
+$('q').oninput=render;
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b));render()});
+$('saveIdx').onclick=()=>{const add=parseIndex($('idx').value);if(!add.length){toast('לא זוהו שורות. כתוב שם ואחריו מספר עמוד.');return}
+  const have=new Set(songs.map(key));add.forEach(s=>{if(!have.has(key(s)))songs.push(s)});sortSongs();LS.set('songs',songs);
+  $('idx').value='';toast('נוספו '+add.length+' שירים');render()};
+$('clearIdx').onclick=e=>{const b=e.currentTarget;if(b.dataset.arm){songs=[];favs.clear();recent=[];LS.set('songs',[]);LS.set('favs',[]);LS.set('recent',[]);
+  b.textContent='נקה הכל';delete b.dataset.arm;render();toast('האינדקס נמחק')}else{b.dataset.arm=1;b.textContent='לחץ שוב לאישור';setTimeout(()=>{delete b.dataset.arm;b.textContent='נקה הכל'},3000)}};
+$('offset').value=offset;$('offset').onchange=e=>{offset=parseInt(e.target.value)||0;LS.set('offset',offset)};
+
+/* ---------- Reader ---------- */
+function songAt(p){const bp=p-offset;let best=null;songs.forEach(s=>{if(s.page<=bp&&(!best||s.page>best.page))best=s});return best&&bp-best.page<3?best.title:''}
+function openSong(s){recent=[key(s),...recent.filter(k=>k!==key(s))].slice(0,30);LS.set('recent',recent);openReader(s.page+offset)}
+$('openBook').onclick=()=>openReader(pageNum);
+async function openReader(p){
+  if(!pdf){toast('קודם טען PDF או תמונות');return}
+  $('reader').hidden=false;$('reader').classList.toggle('night',night);$('rNight').classList.toggle('on',night);
+  document.body.style.overflow='hidden';
+  try{wake=await navigator.wakeLock.request('screen')}catch(e){}
+  go(p);
+}
+function closeReader(){$('reader').hidden=true;$('addRow').hidden=true;document.body.style.overflow='';try{wake&&wake.release()}catch(e){};wake=null;render()}
+async function go(p){
+  p=Math.max(1,Math.min(pdf.numPages,p));pageNum=p;LS.set('last',p);
+  $('rRange').value=p;$('rPg').textContent=p+' / '+pdf.numPages;
+  $('rTitle').textContent=songAt(p)||('עמוד '+(p-offset));
+  $('rLoading').hidden=false;
+  try{
+    const page=await pdf.getPage(p);const st=$('stage');
+    const v1=page.getViewport({scale:1});
+    const sw=st.clientWidth, sh=st.clientHeight;
+    const scale=fitH?Math.min(sw/v1.width,sh/v1.height):sw/v1.width;
+    const dpr=Math.min(window.devicePixelRatio||1,3);
+    const vp=page.getViewport({scale:scale*dpr});
+    const cv=$('cv');cv.width=vp.width;cv.height=vp.height;
+    cv.style.width=(vp.width/dpr)+'px';cv.style.height=(vp.height/dpr)+'px';
+    if(renderTask)try{renderTask.cancel()}catch(e){}
+    renderTask=page.render({canvasContext:cv.getContext('2d'),viewport:vp});
+    await renderTask.promise;st.scrollTop=0;
+  }catch(e){}
+  $('rLoading').hidden=true;
+}
+/* RTL book controls: the left side moves forward like turning a page in an English book */
+$('rNext').onclick=()=>go(pageNum+1);$('rPrev').onclick=()=>go(pageNum-1);
+$('tzR').onclick=()=>go(pageNum+1);$('tzL').onclick=()=>go(pageNum-1);
+$('rRange').oninput=e=>{$('rPg').textContent=e.target.value+' / '+pdf.numPages};
+$('rRange').onchange=e=>go(+e.target.value);
+$('rBack').onclick=closeReader;
+$('rNight').onclick=()=>{night=!night;LS.set('night',night);$('reader').classList.toggle('night',night);$('rNight').classList.toggle('on',night)};
+$('rFit').onclick=()=>{fitH=!fitH;LS.set('fitH',fitH);toast(fitH?'כל העמוד במסך':'התאמה לרוחב');go(pageNum)};
+$('stage').onclick=()=>$('reader').classList.toggle('chromeless');
+$('rAdd').onclick=()=>{$('addRow').hidden=!$('addRow').hidden;if(!$('addRow').hidden)$('addName').focus()};
+$('addSave').onclick=()=>{const t=$('addName').value.trim();if(!t)return;const s={title:t,page:pageNum-offset};
+  if(!songs.some(x=>key(x)===key(s))){songs.push(s);sortSongs();LS.set('songs',songs)}
+  $('addName').value='';$('addRow').hidden=true;$('rTitle').textContent=t;toast('נוסף: '+t)};
+let sx=null,sy=null;
+$('stage').addEventListener('touchstart',e=>{if(e.touches.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY}else sx=null},{passive:true});
+$('stage').addEventListener('touchend',e=>{if(sx==null||(window.visualViewport&&visualViewport.scale>1.05))return;
+  const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(pageNum+(dx<0?1:-1));sx=null},{passive:true});
+document.addEventListener('keydown',e=>{if($('reader').hidden)return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')go(pageNum+1);
+  if(e.key==='ArrowLeft'||e.key==='PageUp')go(pageNum-1);if(e.key==='Escape')closeReader()});
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(!$('reader').hidden)go(pageNum)},250)});
+
+render();
+loadSaved().then(r=>{if(!r)return;if(r.imgs&&r.imgs.length){pdf=imgBook(r.imgs,r.name);showBook(r.name)}else if(r.buf)openPdf(r.buf,r.name)});
+})();
+</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+</body>
+</html>
